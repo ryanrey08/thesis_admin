@@ -83,7 +83,7 @@ class Product extends Model
 
         $provar = DB::table('product_has_variant')
             ->join('variant', 'product_has_variant.variant_id', '=', 'variant.id')
-            ->select('product_has_variant.id', 'product_has_variant.variant_id as variantid', 'variant.name')
+            ->select('product_has_variant.id', 'product_has_variant.variant_id as variantid', 'variant.name as name')
             ->where('product_has_variant.product_id', '=', $product_id);
             
         $varopts = DB::table('product_variant_has_option')
@@ -91,7 +91,7 @@ class Product extends Model
                 $join->on('product_variant_has_option.provar_id', '=', 'provar.id');
             })
             ->join('option', 'product_variant_has_option.option_id', '=', 'option.id')
-            ->select('product_variant_has_option.*', 'option.value as description', 'option.id as optionid')
+            ->select('product_variant_has_option.*', 'option.value as description', 'option.id as optionid', 'provar.id', 'provar.variantid', 'provar.name')
             ->get();
 
         return $varopts;

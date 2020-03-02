@@ -8,12 +8,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-md">
-                        <h1 class="m-0 text-dark">Staffs</h1>
+                        <h1 class="m-0 text-dark">Customers</h1>
                     </div>
                 </div>
-                <button  class="btn btn-add" trigger="hover" data-toggle="tooltip" title="Add New Staff" @click="addStaff">
+               <!--  <button  class="btn btn-add" trigger="hover" data-toggle="tooltip" title="Add New Staff" @click="addStaff">
                     <i class="fas fa-user-plus white" aria-hidden="true"></i>
-                </button>
+                </button> -->
             </div>
         </div>
 
@@ -52,14 +52,13 @@
                                         <th class="text-center w-10"><i class="fas fa-image"></i></th>
                                         <th class="text-center w-25" >Name</th>
                                         <th class="text-center w-25" >Email Address</th>
-                                        <th class="text-center w-10" >Role</th>
                                         <th class="text-center w-10" v-if="filter == 'Archived'">Archived At</th>    
                                         <th class="text-center w-10" v-else>Status</th>
                                         <th class="text-center w-15" >Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-if="staffs.length == 0">
+                                    <tr v-if="customers.length == 0">
                                         <td colspan="7" align="center">
                                             <div class="overlay" style="font-size: 25px; font-weight: bolder;">
                                                 <i class="fa fa-spinner fa-spin red"></i>
@@ -67,24 +66,24 @@
                                         </td>
                                     </tr>
 
-                                    <tr v-else v-for="staff in filteredStaffs" :key="staff.id">
-                                        <td class="text-center">{{ staff.id }}</td>
-                                        <td class="text-center"><img :src="staff.photo" width="24"></td>
-                                        <td class="text-center">{{ staff.name }}</td>
-                                        <td class="text-center">{{ staff.email }}</td>
-                                        <td class="text-center">{{ staff.type == '2' ? 'Staff' : 'Administrator' }}</td>
+                                    <tr v-else v-for="customer in customers" :key="customer.id">
+                                        <td class="text-center">{{ customer.id }}</td>
+                                        <td class="text-center"><img :src="customer.photo" width="24"></td>
+                                        <td class="text-center">{{ customer.name }}</td>
+                                        <td class="text-center">{{ customer.email }}</td>
+                                       <!--  <td class="text-center">{{ customer.type == '2' ? 'Staff' : 'Administrator' }}</td> -->
                                         <td align="center" v-if="filter == 'Archived'">
-                                            <span>{{ staff.updated_at | cusDate }}</span>
+                                            <span>{{ customer.updated_at | cusDate }}</span>
                                         </td>
                                         <td align="center" v-else>
-                                            <span class="badge badge-pill" :class="[staff.active == 1 ? 'badge-info' : 'badge-secondary']">{{ staff.active == 1 ? "Active" : "Archived" }}</span>
+                                            <span class="badge badge-pill" :class="[customer.isactive == 1 ? 'badge-info' : 'badge-secondary']">{{ customer.isactive == 1 ? "Active" : "Archived" }}</span>
                                         </td>
                                         <td class="text-center">
-                                            <button class="btn btn-warning btn-sm" trigger="hover" data-toggle="tooltip" title="Edit Staff" v-if="staff.active == 1" @click="editStaff(staff)"><i class="fas fa-pencil-alt"></i></button>
+                                            <button class="btn btn-warning btn-sm" trigger="hover" data-toggle="tooltip" title="View Details" v-if="customer.isactive == 1" @click="viewCustomer(customer)"><i class="far fa-fw fa-eye"></i></button>
     
-                                            <button class="btn btn-danger btn-sm" trigger="hover" data-toggle="tooltip" title="Archive Staff" v-if="staff.active == 1" @click="deleteStaff(staff.id)"><i class="fas fa-trash"></i></button>
+                                           <!--  <button class="btn btn-danger btn-sm" trigger="hover" data-toggle="tooltip" title="Archive Staff" v-if="staff.customer == 1" @click="deleteStaff(customer.id)"><i class="fas fa-trash"></i></button>
 
-                                            <button class="btn btn-info btn-sm" trigger="hover" data-toggle="tooltip" title="Restore Staff" v-if="staff.active == 0" @click="restoreStaff(staff.id)"><i class="fas fa-trash-restore"></i></button>
+                                            <button class="btn btn-info btn-sm" trigger="hover" data-toggle="tooltip" title="Restore Staff" v-if="customer.isactive == 0" @click="restoreStaff(customer.id)"><i class="fas fa-trash-restore"></i></button> -->
                                         </td>
                                     </tr>
                                 </tbody>
@@ -93,18 +92,18 @@
                     </div>
                 </div>
             </div>
-            <div class="modal fade" id="addStaff" tabindex="-1" role="dialog" aria-labelledby="addStaffLabel" aria-hidden="true">
+            <div class="modal fade" id="viewCustomer" tabindex="-1" role="dialog" aria-labelledby="addStaffLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                     <div class="modal-content" >
 
                         <div class="modal-header">
-                            <h5 class="modal-title" id="addStaffLabel"><i class="fa fa-fw" :class="[updateMode ? 'fa-user-edit' : 'fa-user-plus']" aria-hidden="true"></i>{{ updateMode ? " Edit Staff" : " Add New Staff" }}</h5>
+                            <h5 class="modal-title" id="addStaffLabel">Customer Details</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
 
-                        <form @submit.prevent="updateMode ? updateStaff() : saveStaff() ">
+                        <form >
 
                             <div class="modal-body">
 
@@ -114,43 +113,29 @@
 
                                         <h4 class="display-6">Account Information</h4>
 
+                                        
+                                        <label for="">Name</label>
                                         <div class="input-group mb-3">
 
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fas fa-user-tag fa-fw"></i></span>
                                             </div>
 
-                                            <input v-model="staff.name" class="form-control" :class="{ 'is-invalid' : staff.errors.has('name') }" type="text" name="name" placeholder="Full Name">
-
-                                            <has-error :form="staff" field="name"></has-error>
+                                            <input v-model="newCustomer.name" class="form-control" type="text" name="name" placeholder="Full Name" disabled="true">
 
                                         </div>
-
-                                        <div class="form-group">
-
-                                            <label for="">Role</label>
-                                            <select v-model="staff.type" class="custom-select" name="type" id="type">
-                                                <option selected value="1">Administrator</option>
-                                                <option value="2">Staff</option>
-                                            </select>
-
-                                            <has-error :form="staff" field="type"></has-error>
-
-                                        </div>
-
-                                        <div class="input-group mb-3" v-if="!updateMode">
+                                        
+                                         <label for="">E-mail</label>
+                                        <div class="input-group mb-3">
 
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-user-lock fa-fw"></i></span>
                                             </div>
 
-                                            <input v-model="staff.email" class="form-control" :class="{ 'is-invalid' : staff.errors.has('email') }" type="email" name="email" placeholder="Email Address">
-
-                                            <has-error :form="staff" field="email"></has-error>
-
+                                            <input v-model="newCustomer.email" class="form-control" type="email" name="email" placeholder="Email Address" disabled="true">
                                         </div>
 
-                                        <div class="input-group mb-3" v-if="!updateMode">
+                                        <!-- <div class="input-group mb-3">
 
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-user-lock fa-fw"></i></span>
@@ -160,9 +145,9 @@
 
                                             <has-error :form="staff" field="password"></has-error>
 
-                                        </div>
+                                        </div> -->
 
-                                        <div class="input-group mb-3" v-if="!updateMode">
+                                       <!--  <div class="input-group mb-3" v-if="!updateMode">
 
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text"><i class="fa fa-user-lock fa-fw"></i></span>
@@ -172,7 +157,7 @@
 
                                             <has-error :form="staff" field="confirm"></has-error>
 
-                                        </div>
+                                        </div> -->
 
                                     </div>
 
@@ -182,7 +167,6 @@
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">{{ updateMode ? " Apply Changes" : " Save" }}</button>
                             </div>
 
                         </form>
@@ -207,17 +191,15 @@
             return {
 
                 // Data Handlers
-                staff: new Form({
+                newCustomer: new Form({
                     id: null,
                     name: null,
-                    type: 1,
                     email: null,
-                    password: null,
-                    slug: null,
-                    confirm: null
+                    photo: null,
+                    isactive: null
                 }),
                 
-                staffs: [],
+                customers: [],
                 filters: ["All", "Archived", "Unarchived"],
                 searchQuery: '',
                 updateMode: false,
@@ -228,11 +210,11 @@
                 // filteredProducts: [],
                 
                 filter: null,
-                activeStaff: new Form({
-                    id: null,
-                    name: null,
-                    type: null,
-                }),
+                // activeStaff: new Form({
+                //     id: null,
+                //     name: null,
+                //     type: null,
+                // }),
                 
 
             }
@@ -241,15 +223,15 @@
         computed: {
             filteredStaffs: function() {
                 if(this.searchQuery) {
-                    return this.staffs.filter((staff) => {
-                        if( (staff.id.toString().toLowerCase().search(this.searchQuery.toString().toLowerCase()) > -1) || 
-                            (staff.name.toString().toLowerCase().search(this.searchQuery.toString().toLowerCase()) > -1) ||
-                            (staff.email.toString().toLowerCase().search(this.searchQuery.toString().toLowerCase()) > -1)) {
-                                return staff.name;
+                    return this.customers.filter((customer) => {
+                        if( (customer.id.toString().toLowerCase().search(this.searchQuery.toString().toLowerCase()) > -1) || 
+                            (customer.name.toString().toLowerCase().search(this.searchQuery.toString().toLowerCase()) > -1) ||
+                            (customer.email.toString().toLowerCase().search(this.searchQuery.toString().toLowerCase()) > -1)) {
+                                return customer.name;
                         }
                     })
                 } else {
-                    return this.staffs;
+                    return this.customer;
                 }
             }
         },
@@ -261,144 +243,29 @@
             //     axios.get('/api/product/variants/get/'+product.id).then(({ data }) => ( product.variants = data ))
             // },
 
-            getActiveStaff: function() {
-                axios.get("/api/profile").then(({data}) => this.activeStaff.fill(data));
+            // getActiveStaff: function() {
+            //     axios.get("/api/profile").then(({data}) => this.activeStaff.fill(data));
+            // },
+            viewCustomer: function(customer) {
+                $('#viewCustomer').modal('show');
+                this.newCustomer.fill(customer)
             },
 
-            loadStaffs: function() {
+            loadCustomers: function() {
 
-                axios.get('/api/staff').then(({ data }) => (this.staffs = data, this.newStaffs = data));
+                axios.get('/api/customer').then(({ data }) => (this.customers = data));
                 this.filter = "All";
 
-            },
-
-            addStaff: function() {
-                this.updateMode = false;
-                this.staff.reset();
-                $('#addStaff').modal('show');
-
-            },
-
-            saveStaff: function(){
-                this.$Progress.start();
-                this.staff.post('/api/staff')
-                    .then(() => {
-                        this.$Progress.finish();
-                        $('#addStaff').modal('hide');
-                        Toast.fire({
-                            type: 'success',
-                            title: 'Staff Created Successfully'
-                        });
-                        Fire.$emit('AfterCreate');
-                    })
-                    .catch(({error}) => { this.$Progress.finish(); });
-            },
-
-            editStaff: function(staff) {
-                this.updateMode = true;
-                this.staff.reset();
-                $('#addStaff').modal('show');
-                this.staff.fill(staff);
-            },
-
-            updateStaff: function(id) {
-                this.$Progress.start();
-                this.staff.put('/api/staff/'+this.staff.id)
-                    .then(() => {
-                        this.$Progress.finish();
-                        $('#addStaff').modal('hide');
-                        Toast.fire({
-                            type: 'success',
-                            title: 'Staff Updated Successfully'
-                        });
-                        Fire.$emit('AfterCreate');
-                    })
-                    .catch(({error}) => {
-                        this.$Progress.fail();
-                        Swal.fire(
-                            'Failed', "There's something wrong.",
-                            'warning'
-                        );
-                        console.log(error.message);
-                    });
-
-            },
-
-            deleteStaff: function(id) {
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-
-                    if(result.value){
-                        this.$Progress.start();
-                        this.staff.delete('/api/staff/'+id)
-                            .then(() => {
-                                this.$Progress.finish();
-                                Swal.fire(
-                                    'Deleted!',
-                                    'A record has been deleted.',
-                                    'success')
-                                Fire.$emit('AfterCreate');
-                            })
-                            .catch(() => {
-                                this.$Progress.finish();
-                                Swal.fire(
-                                    'Failed', "There's something wrong.",
-                                    'warning'
-                                )
-                            });
-                    }
-                });
-            },
-
-            restoreStaff: function(id) {
-                Swal.fire({
-                    title: 'Restore Account',
-                    text: "Restore account?",
-                    type: 'info',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Restore'
-                }).then((result) => {
-
-                    if(result.value){
-                        this.$Progress.start();
-                        this.staff.get('/api/staff/restore/'+id)
-                            .then(() => {
-                                this.$Progress.finish();
-                                Swal.fire(
-                                    'Restored!',
-                                    'A record has been restored.',
-                                    'success')
-                                Fire.$emit('AfterCreate');
-                            })
-                            .catch(() => {
-                                this.$Progress.finish();
-                                Swal.fire(
-                                    'Failed', "There's something wrong.",
-                                    'warning'
-                                )
-                            });
-                    }
-                });
-            },
-
+            }
 
         },
 
         created() {
-            this.getActiveStaff();
-            this.loadStaffs();
+            //this.getActiveStaff();
+            this.loadCustomers();
 
             Fire.$on('AfterCreate', () => {
-                this.loadStaffs();
+                this.loadCustomers();
             });
         }
     }

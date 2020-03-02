@@ -28,11 +28,11 @@
 									</div>
 									<div v-else v-for="product in filteredProducts" :key="product.id" class="col-3" @click.prevent="checkItem(product)">
 										<div class="card card-outline product-item" :class="[product.ispublished == 1 ? 'card-primary' : 'card-danger']" style="height:320px; width: 100%;">
-											<div class="ribbon-wrapper" v-if="product.discounttype != 0 && product.discounttype != null" >
+											<div class="ribbon-wrapper" v-if="product.discount_type != 0 && product.discount_type != null" >
 									
 												<div class="ribbon discount-ribbon">
 													<div class="glow"></div>
-													<span class="strong">{{ product.discounttype == 1 ? (product.discount + '% OFF') : 'LESS ₱' + product.discount }}</span>
+													<span class="strong">{{ product.discount_type == 1 ? (product.discount_value + '% OFF') : 'LESS ₱' + product.discount_value }}</span>
 									
 											    </div>
 											</div>
@@ -47,18 +47,18 @@
 											</div>
 											<div class="card-footer border-top-0 text-center product-price" style="height: 60px;">
 												<p class="small" v-if="product.combination == 'NONE'">
-													<span v-if="product.discounttype != 0 && product.discounttype != null">
-														<b> ₱ {{ Math.floor(getDiscountedPrice(product.discounttype, product.discount, product.maxprice)) }}</b>
+													<span v-if="product.discount_type != 0 && product.discount_type != null">
+														<b> ₱ {{ Math.floor(getDiscountedPrice(product.discount_type, product.discount_value, product.maxprice)) }}</b>
 														<br>
 														<!-- <span class="light"><del>₱ {{ Math.floor(product.maxprice) }}</del></span> -->
 													</span>
 													<span v-else><b>₱ {{ product.maxprice }}</b></span>
 												</p>
 												<p class="small" v-else>
-													<span v-if="product.discounttype != 0 && product.discounttype != null">
+													<span v-if="product.discount_type != 0 && product.discount_type != null">
 																	
-														<b v-if="product.minprice == product.maxprice">₱ {{ Math.floor(getDiscountedPrice(product.discounttype, product.discount, product.maxprice)) }}</b>	
-														<b v-else>₱ {{ Math.floor(getDiscountedPrice(product.discounttype, product.discount, product.minprice)) }} - {{ Math.floor(getDiscountedPrice(product.discounttype, product.discount, product.maxprice)) }}</b>
+														<b v-if="product.minprice == product.maxprice">₱ {{ Math.floor(getDiscountedPrice(product.discount_type, product.discount_value, product.maxprice)) }}</b>	
+														<b v-else>₱ {{ Math.floor(getDiscountedPrice(product.discount_type, product.discount, product.minprice)) }} - {{ Math.floor(getDiscountedPrice(product.discount_type, product.discount_value, product.maxprice)) }}</b>
 														<br>
 														<!-- <span class="light"><del>₱ {{ Math.floor(product.maxprice) }}</del></span> -->
 													</span>
@@ -77,11 +77,11 @@
 											</div>
 											<div class="product-frame">
 
-												<div class="d-flex flex-wrap " :class="product.discounttype != 0 && product.discounttype != null ? 'justify-content-between' : ''">
+												<div class="d-flex flex-wrap " :class="product.discount_type != 0 && product.discount_type != null ? 'justify-content-between' : ''">
 													<!-- <div v-if="product.discounttype != 0 && product.discounttype != null" class="p-1 discount-ribbon small" trigger="hover" data-toggle="tooltip" >
 														<span class="strong">{{ product.discounttype == 1 ? (product.discount + '% OFF') : 'LESS ₱' + product.discount }}</span>
 													</div> -->
-													<div v-if="product.combination != 'NONE'" class="p-1 bg-danger small" :class="product.discounttype != 0 && product.discounttype != null ? '' : 'ml-auto'" trigger="hover" data-toggle="tooltip" :title="product.variantcount+' available variants'" style="opacity: .8;">
+													<div v-if="product.combination != 'NONE'" class="p-1 bg-danger small" :class="product.discount_type != 0 && product.discount_type != null ? '' : 'ml-auto'" trigger="hover" data-toggle="tooltip" :title="product.variantcount+' available variants'" style="opacity: .8;">
 														<i class="fa fa-plus fa-fw" aria-hidden="true"></i>
 													</div>
 												</div>
@@ -195,8 +195,8 @@
 												<h5 class="small">{{ selectedProduct[0].name }}</h5>
 											</div>
 											<div class="d-flex flex-wrap">
-												<h6 class="mr-2 small" v-if="selectedProduct[0].discounttype != 0"><del>₱ {{ selectedProduct[0].price }}</del></h6>
-												<h6><strong>₱ {{ Math.floor(getDiscountedPrice(selectedProduct[0].discounttype, selectedProduct[0].discount, selectedProduct[0].price)) }}</strong></h6>
+												<h6 class="mr-2 small" v-if="selectedProduct[0].discount_type != 0"><del>₱ {{ selectedProduct[0].price }}</del></h6>
+												<h6><strong>₱ {{ Math.floor(getDiscountedPrice(selectedProduct[0].discount_type, selectedProduct[0].discount_value, selectedProduct[0].price)) }}</strong></h6>
 											</div>
 											<!-- <h6 v-if="selectedProduct.discounttype != 0"><del>₱ {{ Number(selectedProduct.price) }}</del></h6> -->
 											
@@ -536,7 +536,7 @@ export default {
 
 				selectItem: function(product, qty = 1) {
 					if(this.selectedItems.length == 0) {
-						product.price = Math.floor(this.getDiscountedPrice(product.discounttype, product.discount, product.price));
+						product.price = Math.floor(this.getDiscountedPrice(product.discount_type, product.discount_value, product.price));
 						let item = {
 							product: product,
 							quantity: qty
@@ -553,7 +553,7 @@ export default {
 						}
 
 						if(!found) {
-							product.price = Math.floor(this.getDiscountedPrice(product.discounttype, product.discount, product.price));
+							product.price = Math.floor(this.getDiscountedPrice(product.discount_type, product.discount_value, product.price));
 							let item = {
 								product: product,
 								quantity: qty
@@ -601,13 +601,17 @@ export default {
 
 			created() {
 				// setTimeout(this.getDate(), 1000);
-				
-				setInterval(() => this.getDateTime(), 1000);
-				this.getStaff();
 				this.loadProducts();
 				Fire.$on('AfterTransaction', () => {
 	                this.loadProducts();
 	            });
+
+				// setInterval(() => this.getDateTime(), 1000);
+				// this.getStaff();
+				// this.loadProducts();
+				// Fire.$on('AfterTransaction', () => {
+	   //              this.loadProducts();
+	   //          });
 			}
 		};
 </script>

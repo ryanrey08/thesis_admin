@@ -11,6 +11,11 @@ class POStatusTableSeeder extends Seeder
      */
     public function run()
     {
+
+        // DB::table('po_status')->insert([
+        //     'description' => 'For Approval'
+        // ]);
+
         DB::table('po_status')->insert([
             'description' => 'Pending'
         ]);

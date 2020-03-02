@@ -191,7 +191,7 @@
 												<div class="d-flex">
 													<a href="" v-if="changePassword == false" @click.prevent="changePassword = true">Change Password</a>
 													<a href="" v-if="changePassword == true" @click.prevent="changePassword = false">Cancel Change of Password</a>
-													<button class="btn btn-primary ml-auto">Save Changes</button>
+													<button class="btn btn-primary ml-auto" @click="saveChanges">Save Changes</button>
 												</div>
 											</div>
 
@@ -227,6 +227,28 @@ export default {
 		getStaff: function() {
 			axios.get("/api/profile").then(({data}) => this.staff.fill(data));
 		},
+
+		saveChanges: function() {
+			this.$Progress.start();
+				this.staff.put('/api/staff/'+this.staff.id)
+					.then(() => {
+						this.$Progress.finish();
+						$('#addStaff').modal('hide');
+						Toast.fire({
+							icon: 'success',
+							title: 'Staff Updated Successfully'
+						});
+						Fire.$emit('AfterCreate');
+					})
+					.catch(({error}) => {
+						this.$Progress.fail();
+						Swal.fire(
+							'Failed', "There's something wrong.",
+							'warning'
+						);
+						console.log(error.message);
+					});
+		}
 
 	},
 

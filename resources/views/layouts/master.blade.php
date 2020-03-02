@@ -74,9 +74,11 @@
 				@guest
 				@else
 				<div class="user-panel mt-3 pb-3 mb-3 d-flex">
-					<div class="image">
+					<!-- <div class="image"> -->
+						<router-link to="/profile" class="nav-link" data-toggle="tooltip" title="{{ Auth::user()->name }}">
 						<img src="{{ Auth::user()->photo }}" class="img-circle elevation-2" alt="User Image">
-					</div>
+					</router-link>
+					<!-- </div> -->
 					<div class="info">
 						<a class="d-block font-weight-bold">{{ Auth::user()->name }}</a>
 						<span class="d-block font-weight-bold" style="font-size: .65rem;"><i class="far fa-dot-circle fa-fw green hidden "></i>{{ Auth::user()->getRole(Auth::user()->role_id) }}</span>
@@ -102,7 +104,7 @@
 
 						@if (Auth::user()->role_id == 1)
 						
-
+						@auth
 						<!-- Management -->
 						<li class="nav-item has-treeview">
 							<a href="#" class="nav-link">
@@ -131,7 +133,8 @@
 								</li>
 							</ul>
 						</li>
-					
+						
+						@endauth
 						@endif
 						
 						@if (Auth::user()->role_id == 1 || Auth::user()->role_id == 3)

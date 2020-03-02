@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\User;
+use App\Models\User;
 use Auth;
 
 class UserController extends Controller
@@ -14,15 +14,17 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    
+    protected $customer;
+
     public function __construct()
     {
+         $this->customer = new User();
         $this->middleware('auth:api');
     }
 
     public function index()
     {
-        //
+        return $this->customer->getCustomer();
     }
 
     /**

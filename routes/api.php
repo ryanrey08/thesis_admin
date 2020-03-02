@@ -26,6 +26,12 @@ Route::prefix('staff')->group(function() {
 	Route::get('/roles', 'API\StaffController@getRoles')->name('staff.getRoles');
 });
 
+Route::prefix('user')->group(function() {
+
+	// GET Requests
+	Route::get('/restore/{staff}', 'API\StaffController@restore')->name('staff.restore');
+});
+
 
 Route::prefix('product')->group(function() {
 
@@ -90,6 +96,25 @@ Route::prefix('attributes')->group(function() {
 });
 
 
+Route::prefix('pos')->group(function() {
+	// Get Requests
+	Route::get('/getVariants/{product}', 'API\POSController@getProVariants')->name('pos.getvars');
+	// Route::get('/getOptions/{variant}', 'API\POSController@getProOptions')->name('pos.getopts');
+
+	// Post Request
+	Route::post('/transaction/checkout', 'API\POSController@checkout')->name('pos.checkout');
+});
+
+
+Route::prefix('payments')->group(function() {
+	// GET Requests
+	
+	Route::get('/get/methods/{transaction}', 'API\PaymentController@getPaymentMethods')->name('payments.getPaymentMethods');
+	
+	// POST Requests
+});
+
+
 
 
 
@@ -129,13 +154,29 @@ Route::prefix('porder')->group(function() {
 	// POST Requests
 });
 
+Route::prefix('order')->group(function() {
+	// GET Requests
+	
+	// Route::get('/get', 'API\SourceController@getAllSources')->name('source.getAllVendors');
+	Route::get('/status/get', 'API\OrderController@getOrderStatus')->name('order.getOrderStatus');
+	
+	// POST Requests
+});
+
+
 
 
 Route::apiResources([
     'staff' => 'API\StaffController',
+    'pos' => 'API\POSController',
+    'customer' => 'API\UserController',
     'product' => 'API\ProductController',
     'collections' => 'API\CollectionController',
+    'location' => 'API\LocationController',
     'inventory' => 'API\InventoryController',
     'source' => 'API\SourceController',
-    'porder' => 'API\PurchaseOrderController'
+    'porder' => 'API\PurchaseOrderController',
+    'payments' => 'API\PaymentController',
+	// 'vendor' => 'API\VendorController',
+    'orders' => 'API\OrderController'
 ]);

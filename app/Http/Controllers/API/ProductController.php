@@ -242,8 +242,8 @@ class ProductController extends Controller
         try {
 
             $oldProduct = $product->update([
-                'discounttype' => $request->discounttype,
-                'discount' => $request->discountValue,
+                'discount_type' => $request->discounttype,
+                'discount_value' => $request->discountValue,
             ]);
 
             if($oldProduct){

@@ -66,9 +66,9 @@
                                         <td class="text-center">{{ order.total.toFixed(2) }}</td>
                                         <td class="text-center">{{ order.created_at | cusDate }}</td>
                                         <td class="text-center">
-                                            <router-link :to="{ path: '/orders/'+order.id+'/manage', params: { orderid: order.id } }" class="btn btn-warning btn-sm" trigger="hover" data-toggle="tooltip" title="Manage Order"><i class="icon ion-ios-more"></i></router-link>
+                                            <router-link :to="{ path: '/orders/'+order.id+'/manage', params: { orderid: order.id } }" class="btn btn-warning btn-sm" trigger="hover" data-toggle="tooltip" title="Manage Order"><i class="fas fa-pencil-alt"></i></router-link>
                                             
-                                            <router-link :to="{ path: '/orders/'+order.id+'/view', params: { orderid: order.id } }" class="btn btn-view btn-sm" trigger="hover" data-toggle="tooltip" title="View Order Details"><i class="icon ion-ios-eye"></i></router-link>
+                                            <router-link :to="{ path: '/orders/'+order.id+'/view', params: { orderid: order.id } }" class="btn btn-view btn-sm" trigger="hover" data-toggle="tooltip" title="View Order Details"><i class="far fa-fw fa-eye"></i></router-link>
                                         </td>
                                     </tr>
                                 </tbody>
