@@ -52,4 +52,12 @@ class PurchaseOrderHasItems extends Model
             ->where('purchase_order.id', $porderid)->get();
         return $porder;
     }
+
+    public function item() {
+         return $this->belongsTo('App\Models\Item');
+    }
+
+    public function product() {
+         return $this->belongsTo('App\Models\Product');
+    }
 }

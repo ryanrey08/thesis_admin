@@ -160,11 +160,13 @@ let routes = [
     { path: '/dashboard', component: require('./components/Dashboard.vue').default },
     { path: '/profile', component: require('./components/Profile.vue').default },
     { path: '/pos', component: require('./components/pointofsales/PointOfSales.vue').default },
+      { path: '/printreceipt', component: require('./components/pointofsales/POSPrint.vue').default },
     // { path: '/pos/invoice', component: require('./components/pointofsales/Invoice.vue').default },
     { path: '/product', component: require('./components/products/ProductList.vue').default },
     { path: '/product/add', component: require('./components/products/AddProduct.vue').default },
     { path: '/product/:productid/view', component: require('./components/products/ViewProduct.vue').default },
     { path: '/collections', component: require('./components/products/CollectionList.vue').default },
+    { path: '/collections/:collectionID/viewcollection', component: require('./components/products/CollectionView.vue').default },
     { path: '/product/:productid/edit', component: require('./components/products/EditProduct.vue').default },
     { path: '/inventory', component: require('./components/inventory/Inventory.vue').default },
     { path: '/porder', component: require('./components/inventory/PurchaseOrder.vue').default },
@@ -183,6 +185,10 @@ let routes = [
 
     // { path: '/reservations/reservationall', component: require('./components/reservations/ReservationAll.vue').default },
     // { path: '/reservations/reservationnow', component: require('./components/reservations/ReservationNow.vue').default },
+
+    { path: '/cms/adminpage', component: require('./components/cms/AdminPage.vue').default },
+    { path: '/cms/customerpage', component: require('./components/cms/CustomerPage.vue').default },
+
 
     { path: '/settings/shipping', component: require('./components/settings/ShipSettings.vue').default },
     { path: '/settings/store', component: require('./components/settings/StoreSettings.vue').default },

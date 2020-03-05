@@ -11,26 +11,24 @@ class OrderSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('orders')->insert([
+        DB::table('order')->insert([
             'id' => 34267589,
-            'procartid' => 1,
-            'transactionid' => 1234567890,
-            'userid' => 12345678,
-            'addressid' => 1,
-            'statusid' => 1,
-            'shippingfee' => 150,
-            'total' => 650
+             'shipping_fee' => 150,
+            'total' => 650,
+            'users_id' => 12345678,
+            'address_id' => 1,
+            'order_status_id' => 1,
+             'transaction_id' => 1234567890,
         ]);
 
         DB::table('orders')->insert([
              'id' => 99875321,
-            'procartid' => 2,
-            'transactionid' => 9987654321,
-            'userid' => 56545422,
-            'addressid' => 2,
-            'statusid' => 1,
-            'shippingfee' => 200,
-            'total' => 1350
+            'shipping_fee' => 200,
+             'total' => 1350,
+            'users_id' => 56545422,
+            'address_id' => 2,
+            'order_status_id' => 1,
+            'transaction_id' => 9987654321,
         ]);
     }
 }

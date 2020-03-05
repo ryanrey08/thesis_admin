@@ -103,4 +103,12 @@ class Item extends Model
         return $items;
     }
 
+     public function product() {
+        return $this->belongsTo('App\Models\Product');
+    }
+
+    public function purchase_order_has_item(){
+         return $this->hasMany('App\Models\PurchaseOrderHasItems');
+    }
+
 }

@@ -128,7 +128,7 @@
 												</div>
 											</div>
 										</td>
-										<td class="text-center" @click="showHistory(item.id)">0</td>
+										<td class="text-center" @click="showHistory(item.id)">{{ item.purchase_order_has_item[0].quantity }}</td>
 
 										<td class="text-center" @click="showHistory(item.id)">
 											{{ item.quantity }}
@@ -146,7 +146,7 @@
 														</label>
 													</div>
 												</div>
-												<input type="number" class="form-control" placeholder="0" v-model="item.newQty">
+												<input type="number" class="form-control" placeholder="0" v-model="item.newQty" min="0">
 												<div class="input-group-append">
 													<button type="button" class="btn btn-outline-success" @click="updateItem(item)">Save</button>
 												</div>

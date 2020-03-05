@@ -18,6 +18,9 @@ class DatabaseSeeder extends Seeder
         $this->call(POStatusTableSeeder::class);
         $this->call(EventsTableSeeder::class);
         $this->call(ActionTableSeeder::class);
+        $this->call(CMSTableSeeder::class);
+        $this->call(OrderStatusSeeder::class);
+        $this->call(PaymentSeeder::class);
         
     }
 }

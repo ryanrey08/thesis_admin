@@ -65,7 +65,7 @@
 			<a href="/dashboard" class="brand-link elevation-4 navbar-olive">
 				<img src="/img/design/logos (2)/logo.png" alt="PnC Store" class="brand-image img-circle elevation-3" style="opacity: .8">
 
-				<span class="brand-text font-weight-light text-center text-light">PnC Store</span>
+				<span class="brand-text font-weight-light text-center text-light" id="title">PnC Store</span>
 			</a>
 
 			<!-- Sidebar -->
@@ -285,6 +285,33 @@
 						@if (Auth::user()->role_id == 1)
 					
 						<!-- Settings -->
+						<li class="nav-item has-treeview">
+							<a href="#" class="nav-link">
+								<i class="nav-icon fas fa-cogs gray"></i>
+								<p>
+									CMS
+									<i class="right fas fa-angle-left"></i>
+								</p>
+							</a>
+							<ul class="nav nav-treeview">
+								<li class="nav-item">
+									<router-link to="/cms/adminpage" class="nav-link">
+										<i class="nav-icon fas fa-angle-double-right gray"></i>
+										<p>
+											Admin Page
+										</p>
+									</router-link>
+								</li>
+								<li class="nav-item">
+									<router-link to="/cms/customerpage" class="nav-link">
+										<i class="nav-icon fas fa-angle-double-right gray"></i>
+										<p>
+											Customer Page
+										</p>
+									</router-link>
+								</li>
+							</ul>
+						</li>
 						<li class="nav-item has-treeview">
 							<a href="#" class="nav-link">
 								<i class="nav-icon fas fa-cogs gray"></i>

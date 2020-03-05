@@ -258,13 +258,14 @@
 							</div>
 							<div class="form-group">
 								<label for="amount">Enter Amount</label>
-								<input type="number" class="form-control" id="amount" v-model="amount" min="0">
+								<input type="number" class="form-control" id="amount" v-model="amount" min="0" @change="getAmount">
 							</div>
 						</div>
 
 						<div class="modal-footer justify-content-between">
 							<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-							<button type="button" class="btn btn-primary" @click.prevent="checkout">Finish Transaction</button>
+							<button v-if="Number(amount) >= getTotal" type="button" class="btn btn-primary" @click="checkout">Finish Transaction</button>
+							<button v-else type="button" class="btn btn-primary" disabled="true">Finish Transaction</button>
 						</div>
 
 					</div>
@@ -272,6 +273,100 @@
 				</div>
 
 			</div>
+		<div id="printMe" class="container-sm my-5">
+		<div class="row">
+			<div class="col-md-8 offset-md-2" style="border: 1px solid black">
+				<div class="row px-5">
+					<div class="col-md-6 pt-5">
+						<div>
+							<h4>[Company Name]</h4>
+							<p>[Street Address]</p>
+							<p>[City. ST ZIP]</p>
+							<p>Phone: (000) 000-000</p>
+							<p>Fax: (000) 000-000</p>
+							<p>Website</p>
+						</div>
+					</div>
+					<div class="col-md-6 pt-5">
+						<div class="row">
+							<div class="col-md-6">
+								<p>Date</p>
+								<p>Transaction#</p>
+							</div>
+							<div class="col-md-6">
+								<p>{{ getDate() }}</p>
+								<p>{{ 12345678 }}</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row pt-4 px-5">
+				</div>
+				<div class="row px-5">
+					<div class="col-md-12">
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th scope="col">ITEM NAME</th>
+									<th scope="col">QTY</th>
+									<th scope="col">UNIT PRICE</th>
+									<th scope="col">TOTAL</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr v-for="item in selectedItems">
+									<td>{{ item.product.name }}</td>
+									<td>{{ item.quantity }}</td>
+									<td>{{ item.product.price.toFixed(2) }}</td>
+									<td>{{ (item.quantity * item.product.price).toFixed(2) }}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="row px-5">
+					<div class="col-md-8 com">
+					</div>
+					<div class="col-md-4">
+						<div class="row">
+							<div class="col-md-6">
+								<p>SUB TOTAL</p>
+							</div>
+							<div class="col-md-6">
+								<p>{{ getTotalValue() }}</p>
+							</div>
+						</div>
+						<hr>
+						<hr>
+						<div class="row">
+							<div class="col-md-6">
+								<p>TOTAL</p>
+							</div>
+							<div class="col-md-6">
+								<p class="total">{{ getTotalValue() }}</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<p>CASH</p>
+							</div>
+							<div class="col-md-6">
+								<p class="total">{{ Number(amount).toFixed(2)  }}</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<p>CHANGE</p>
+							</div>
+							<div class="col-md-6">
+								<p class="total">{{ change }}</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 		</div>
 
 
@@ -281,6 +376,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 
 export default {
 	data: function() {
@@ -303,7 +399,8 @@ export default {
 					activeVariants: [],
 					activeProduct: [],
 					variantOptions: [],
-					selectedProduct: {}
+					selectedProduct: {},
+					isFinish: false
 				}
 			},
 
@@ -350,20 +447,25 @@ export default {
 				},
 
 				checkout: function() {
+					$("#checkOut").modal("hide");
 					let transaction = new Form({
 						selectedItems: this.selectedItems,
 						payment: this.amount,
 					});
 
-					this.$Progress.start();
+					//this.isFinish = true;
+					// this.$htmlToPaper('printMe');
+
+					//this.$Progress.start();
 					transaction.post('/api/pos/transaction/checkout')
 						.then(() => {
-							this.$Progress.finish();
-							$('#checkOut').modal('hide');
-							Swal.fire(
-								'Complete!',
-								'Transaction Complete!',
-								'success')
+							this.$htmlToPaper('printMe');
+							// this.$Progress.finish();
+							// $('#checkOut').modal('hide');
+							// Swal.fire(
+							// 	'Complete!',
+							// 	'Transaction Complete!',
+							// 	'success')
 								// .then(() => {
 								// 	window.open('/pos/invoice', '_target');
 								// });
@@ -374,6 +476,25 @@ export default {
 						})
 						.catch(({error}) => { this.$Progress.finish(); console.log(error.message); });
 				},
+
+				// printReceipt: function() {
+				// 	this.isFinish = true;
+				// 	this.$htmlToPaper('printMe');
+				// },
+
+				getTotalValue:function() {
+				let total = 0;
+				for(let x = 0; x < this.selectedItems.length;x++){
+					total += (this.selectedItems[x].quantity * this.selectedItems[x].product.price);
+				}
+
+				return total.toFixed(2);
+			},
+
+			getDate: function() {
+				let date = moment().format('llll');
+				return date;
+			},
 
 				getRemainingQuantity: function(selectedProduct) {
 					let found = false;
@@ -389,6 +510,7 @@ export default {
 				},
 
 				generateCombination: function() {
+					//console.log("hello");
 					let combination = [];
 					for(let index = 0; index < this.activeVariants.length; index++) {
 						for(let inner = 0; inner < this.activeVariants[index].options.length; inner++) {
@@ -399,23 +521,27 @@ export default {
 						}
 					} 
 					
-					combination.sort(function(a, b){return a - b});
+					//combination.sort(function(a, b){return a - b});
+					console.log(combination);
 
 					// console.log(this.checkCombination(combination));
 					let itemid = this.checkCombination(combination);
+					//console.log(itemid);
 					if(itemid !== undefined) {
 						axios.get('/api/inventory/items/'+itemid).then(({data}) => (this.selectedProduct = data));
 					}
 				},
 
 				checkCombination: function(combination) {
-
+					// console.log(combination);
+					combination = combination.toString();
+					combination = combination.replace(',', '-');
 					let combinations = [];
 
 					for(let index = 0; index < this.activeProduct.length; index++) {
 
 						let combo = this.activeProduct[index].combination.split(" - ");
-						combo.sort(function(a, b){return a - b});
+						//combo.sort(function(a, b){return a - b});
 
 						let sku = {
 							id: this.activeProduct[index].id,
@@ -424,10 +550,11 @@ export default {
 
 						combinations.push(sku);
 					}
-
+					console.log(combination.toString());
 					let found = false;
 					let id = null;
 					for(let outer = 0; outer < combinations.length; outer++) {
+						console.log(combinations[outer].comb.toString());
 						if(combination.toString() == combinations[outer].comb.toString()) {
 							found = true;
 							id = combinations[outer].id;
@@ -442,7 +569,7 @@ export default {
 				},
 
 				changeSelection: function(varID, optID) {
-
+					console.log(varID + "," + optID);
 					for(let index = 0; index < this.activeVariants.length; index++) {
 						if(this.activeVariants[index].variantid == varID) {
 							for(let inner = 0; inner < this.activeVariants[index].options.length; inner++) {
@@ -521,6 +648,10 @@ export default {
 
 				getSubTotal: function(item) {
 					return (item.product.price * item.quantity);
+				},
+
+				getAmount: function() {
+					return this.amount;
 				},
 
 				removeItem: function(id) {
@@ -761,4 +892,75 @@ export default {
 	border-left:1px solid #fff;
 }
 
+@media print {
+  h4 {
+	color: #3d9970;
+}
+
+h2 {
+	color: #3d9970;
+}
+
+p {
+	line-height: 8px;
+}
+
+.spval {
+	margin-left: 15px;
+}
+
+.col-md-12 {
+	margin-top: 30px;
+}
+
+select{
+	width: 150px;
+	margin-bottom: 20px;
+	background-color: #3d9970;
+	color: #ffff;
+}
+
+.comment{
+	background-color: #3d9970; 
+	border: 1px solid black; 
+	height: 30px; 
+	width: 375px;
+	padding-top: 8px;
+}
+
+textarea{
+	margin-top: -15px;
+}
+
+table{
+	border: 1px solid #3d9970;
+}
+
+
+th {
+
+	background-color: #3d9970;
+	color: #ffff;
+}
+
+hr{
+	background-color: #3d9970;
+	height: 1px;
+}
+
+.long{
+	width: 110px;
+}
+
+.com{
+	margin-top: 20px;
+}
+
+.total {
+	border: 1px solid #ffffff;
+	height: 20px;
+	background-color: #3d9970;
+	padding: 3px;
+}
+}
 </style>

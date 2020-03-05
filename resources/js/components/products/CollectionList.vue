@@ -95,7 +95,7 @@
 										</td>
 										<td class="text-center">
 											<button class="btn btn-warning btn-sm" trigger="hover" data-toggle="tooltip" title="Edit Collection" @click="editCollection(collection)" v-if="collection.isactive == 1"><i class="fas fa-pencil-alt"></i></button>
-											<router-link :to="{ path: '/collection/'+collection.id+'/view', params: { collectionID: collection.id } }" class="btn btn-info btn-sm" trigger="hover" data-toggle="tooltip" title="View Collection"><i class="fas fa-eye"></i></router-link>
+											<router-link :to="{ path: '/collections/'+collection.id+'/viewcollection', params: { collectionID: collection.id } }" class="btn btn-info btn-sm" trigger="hover" data-toggle="tooltip" title="View Collection"><i class="fas fa-eye"></i></router-link>
 											<button class="btn btn-success btn-sm" trigger="hover" data-toggle="tooltip" title="Activate Collection" v-if="collection.isactive == 0 || collection.isactive == null" @click="enableCollection(collection.id)"><i class="fas fa-check"></i></button>
 	
 											<button class="btn btn-danger btn-sm" trigger="hover" data-toggle="tooltip" title="Disable Collection" v-if="collection.isactive == 1" @click="disableCollection(collection.id)"><i class="fas fa-trash"></i></button>
@@ -135,7 +135,8 @@
 												<div class="col-sm-12">
 													<div class="form-group">
 														<label for="">Title</label>
-														<input class="form-control" type="text" name="name" placeholder="e.g (BTS Collection, Under P250, Korean Experience...)" v-model="collection.description">
+														<input class="form-control" type="text" name="name" placeholder="e.g (BTS Collection, Under P250, Korean Experience...)" v-model="collection.description" :class="{ 'is-invalid' : collection.errors.has('description') }" >
+														<has-error :form="collection" field="description"></has-error>
 													</div>
 												</div>
 											</div>
@@ -146,14 +147,16 @@
 											<div class="col-sm-6">
 												<div class="w-100 border-info pt-2":class="[collection.display_image == null ? 'opacity' : '']" style="height: 250px; border: dashed; cursor: pointer;" @click="addDP">
 													<img :src="collection.display_image == null ? '/img/designs/svg/pictures.svg' : collection.display_image" class="w-75 h-100">
-													<input id="display_image" name="display_image" type="file" @change="uploadDP" hidden/>
+													<input id="display_image" name="display_image" type="file" @change="uploadDP" hidden :class="{ 'is-invalid' : collection.errors.has('display_image') }" />
+													<has-error :form="collection" field="display_image"></has-error>
 												</div>
 												<div class="small blue">{{ collection.display_image == null ? 'Add' : 'Change' }} Display Image</div>
 											</div>
 											<div class="col-sm-6">
 												<div class="w-100 border-info pt-2":class="[collection.cover_image == null ? 'opacity' : '']" style="height: 250px; border: dashed; cursor: pointer;" @click="addCP">
 													<img :src="collection.cover_image == null ? '/img/designs/svg/pictures.svg' : collection.cover_image" class="w-75 h-100">
-													<input id="cover_image" name="cover_image" type="file" @change="uploadCP" hidden/>
+													<input id="cover_image" name="cover_image" type="file" @change="uploadCP" hidden :class="{ 'is-invalid' : collection.errors.has('cover_image') }" />
+													<has-error :form="collection" field="cover_image"></has-error>
 												</div>
 												<div class="small blue">{{ collection.cover_image == null ? 'Add' : 'Change' }} Cover Image</div>
 											</div>

@@ -11,12 +11,12 @@ class PaymentSeeder extends Seeder
      */
     public function run()
     {
-         DB::table('payment_methods')->insert([
+         DB::table('payment_method')->insert([
         	'name' => 'Cash on Delivery',
             'description' => 'Please ensure that you will pay the exact amount as the courier will deliver your item'
         ]);
 
-        DB::table('payment_methods')->insert([
+        DB::table('payment_method')->insert([
             'name' => 'Palawan Express',
             'description' => 'Once payment has been made, send receipt to sales@hanadulsetph.com or thru FB/hanadulsetph. ORDER ID + Receipt [palawan express]'
         ]);

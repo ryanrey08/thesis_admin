@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Models\Item;
 use App\Models\InventoryHistory;
+use App\Models\PurchaseOrderHasItems;
 
 use DB;
 use Auth;
@@ -22,7 +23,11 @@ class InventoryController extends Controller
 
     public function index() {
 
-        return $this->item->getItems();
+        // return $this->item->getItems();
+
+         return $this->item->with(
+            ['product', 'purchase_order_has_item'
+            ])->orderBy('item.name', 'asc')->paginate(21);
     }
 
 

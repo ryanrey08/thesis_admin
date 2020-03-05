@@ -177,6 +177,78 @@
 
 <style scoped>
 
+@media print {
+  h4 {
+	color: #3d9970;
+}
+
+h2 {
+	color: #3d9970;
+}
+
+p {
+	line-height: 8px;
+}
+
+.spval {
+	margin-left: 15px;
+}
+
+.col-md-12 {
+	margin-top: 30px;
+}
+
+select{
+	width: 150px;
+	margin-bottom: 20px;
+	background-color: #3d9970;
+	color: #ffff;
+}
+
+.comment{
+	background-color: #3d9970; 
+	border: 1px solid black; 
+	height: 30px; 
+	width: 375px;
+	padding-top: 8px;
+}
+
+textarea{
+	margin-top: -15px;
+}
+
+table{
+	border: 1px solid #3d9970;
+}
+
+
+th {
+
+	background-color: #3d9970;
+	color: #ffff;
+}
+
+hr{
+	background-color: #3d9970;
+	height: 1px;
+}
+
+.long{
+	width: 110px;
+}
+
+.com{
+	margin-top: 20px;
+}
+
+.total {
+	border: 1px solid #ffffff;
+	height: 20px;
+	background-color: #3d9970;
+	padding: 3px;
+}
+}
+
 h4 {
 	color: #3d9970;
 }

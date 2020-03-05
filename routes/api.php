@@ -24,6 +24,8 @@ Route::prefix('staff')->group(function() {
 	Route::get('/restore/{staff}', 'API\StaffController@restore')->name('staff.restore');
 	Route::get('/search', 'API\StaffController@searchStaff')->name('staff.searchStaff');
 	Route::get('/roles', 'API\StaffController@getRoles')->name('staff.getRoles');
+
+	Route::post('/updateProfile/{staff}', 'API\StaffController@updateProfile')->name('staff.updateProfile');
 });
 
 Route::prefix('user')->group(function() {
@@ -154,6 +156,13 @@ Route::prefix('porder')->group(function() {
 	// POST Requests
 });
 
+Route::prefix('cms')->group(function() {
+
+	// GET Requests
+	// Route::get('/', 'API\CollectionController@restore')->name('collection.restore');
+});
+
+
 Route::prefix('order')->group(function() {
 	// GET Requests
 	
@@ -178,5 +187,6 @@ Route::apiResources([
     'porder' => 'API\PurchaseOrderController',
     'payments' => 'API\PaymentController',
 	// 'vendor' => 'API\VendorController',
-    'orders' => 'API\OrderController'
+    'orders' => 'API\OrderController',
+      'cms' => 'API\CMSController',
 ]);

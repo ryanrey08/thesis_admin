@@ -34,28 +34,28 @@ class Product extends Model
         return $products;
     }
 
-    public function getAllProducts() {
+    // public function getAllProducts() {
         
-        $items = DB::table('item')
-            ->select("item.product_id","item.id as itemid", "item.combination as combination", DB::raw('MIN(item.price) as minprice'), DB::raw('MAX(item.price) as maxprice'), DB::raw('SUM(item.quantity) as qty'), DB::raw('COUNT(item.product_id) as variantcount'))
-            ->groupBy('item.product_id');
+    //     $items = DB::table('item')
+    //         ->select("item.product_id","item.id as itemid", "item.combination as combination", DB::raw('MIN(item.price) as minprice'), DB::raw('MAX(item.price) as maxprice'), DB::raw('SUM(item.quantity) as qty'), DB::raw('COUNT(item.product_id) as variantcount'))
+    //         ->groupBy('item.product_id');
             
 
-        $products = DB::table('product')
-            ->join('product_images', function($join) {
-                $join->on('product.id', '=', 'product_images.product_id')
-                    ->where('product_images.iscover', '=', '1');
-            })
-            ->join('category', 'product.category_id', '=', 'category.id')
-            ->joinSub($items, 'items', function($join) {
-                $join->on('product.id', '=', 'items.product_id');
-            })
-            ->select('product.*', 'product_images.name as imgname', 'category.description as categoryname', 'items.itemid', 'items.combination', 'items.minprice', 'items.maxprice', 'items.qty', 'items.variantcount')
-            ->latest()
-            ->paginate(10);
+    //     $products = DB::table('product')
+    //         ->join('product_images', function($join) {
+    //             $join->on('product.id', '=', 'product_images.product_id')
+    //                 ->where('product_images.iscover', '=', '1');
+    //         })
+    //         ->join('category', 'product.category_id', '=', 'category.id')
+    //         ->joinSub($items, 'items', function($join) {
+    //             $join->on('product.id', '=', 'items.product_id');
+    //         })
+    //         ->select('product.*', 'product_images.name as imgname', 'category.description as categoryname', 'items.itemid', 'items.combination', 'items.minprice', 'items.maxprice', 'items.qty', 'items.variantcount')
+    //         ->latest()
+    //         ->paginate(10);
 
-        return $products; 
-    }
+    //     return $products; 
+    // }
 
     public function getProduct($product_id) {
         
@@ -188,5 +188,37 @@ class Product extends Model
 
         return $products;
 
+    }
+
+     public function collections() {
+        return $this->belongsToMany('App\Models\Collection', 'collection_has_product', 'product_id', 'collection_id');
+    }
+
+    public function category() {
+        return $this->belongsTo('App\Models\Category');
+    }
+
+    public function tags() {
+        return $this->belongsToMany('App\Models\Tag', 'product_has_tag', 'product_id', 'tag_id');
+    }
+
+    public function images() {
+        return $this->hasMany('App\Models\ProductImages');
+    }
+
+    public function variants() {
+        return $this->belongsToMany('App\Models\Variant', 'product_has_variant', 'product_id', 'variant_id');
+    }
+
+    public function product_variants() {
+        return $this->hasMany('App\Models\ProductHasVariant');
+    }
+
+    public function items() {
+        return $this->hasMany('App\Models\Item');
+    }
+
+    public function purchase_order_has_item() {
+        return $this->hasMany('App\Models\PurchaseOrderHasItems');
     }
 }

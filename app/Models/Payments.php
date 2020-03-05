@@ -12,23 +12,23 @@ class Payments extends Model
 {
     
     protected $guarded = [];
-    protected $table = 'payments';
+    protected $table = 'payment';
 
 
     public function getPaymentMethods($transactionid) {
-    	$paymentmethod = DB::table('payment_methods')
-    		->join('transactions', 'payment_methods.id', '=', 'transactions.paymenttype')
-    		->select('payment_methods.*', 'transactions.id')
-    		->where('transactions.id',  '=', $transactionid)
+    	$paymentmethod = DB::table('payment_method')
+    		->join('transaction', 'payment_method.id', '=', 'transaction.paymenttype')
+    		->select('payment_method.*', 'transaction.id')
+    		->where('transaction.id',  '=', $transactionid)
     		->limit(1)
     		->get();
     	return $paymentmethod;
     }
 
     public function updatePaymentRecord($transactionid) {
-    	$record = DB::table('payments')
+    	$record = DB::table('payment')
     		->select('*')
-    		->where('payments.transactionid', '=', $transactionid)
+    		->where('payment.transactionid', '=', $transactionid)
     		->limit(1)
     		->get();
     	return $record;

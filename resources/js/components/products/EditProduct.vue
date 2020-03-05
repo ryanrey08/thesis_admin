@@ -48,13 +48,16 @@
 											:taggable="true"
 											tag-placeholder="Add this as category"
 											@input="selectCategory"
-											@tag="addCategory">
+											@tag="addCategory"
+											:class="{ 'is-invalid' : product.errors.has('categoryID') }">
 										</multiselect>
+										<has-error :form="product" field="categoryID"></has-error>
 									</div>
 								</div>
 							</div>
 							<label for="productdesc">Description</label>
-							<vue-editor id="productdesc" v-model="product.description" :editor-toolbar="toolBar"></vue-editor>
+							<vue-editor id="productdesc" v-model="product.description" :editor-toolbar="toolBar" :class="{ 'is-invalid' : product.errors.has('description') }"></vue-editor>
+							<has-error :form="product" field="description"></has-error>
 						</div>
 					</div>
 					<div class="card">
@@ -62,7 +65,8 @@
 							<div class="d-flex justify-content-between">
 								<h3 class="card-title">Images</h3>
 								<a href="" @click.prevent="clickUpload"><h6>Upload Images</h6></a>
-								<input id="imgUpload" name="images[]" multiple type="file" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" hidden @change="uploadImage" />
+								<input id="imgUpload" name="images[]" multiple type="file" accept=".jpg, .png, .jpeg, .gif, .bmp, .tif, .tiff|image/*" hidden @change="uploadImage" :class="{ 'is-invalid' : product.errors.has('images') }"/>
+								<has-error :form="product" field="images"></has-error>
 							</div>
 						</div>
 
@@ -113,7 +117,7 @@
 											<div class="input-group-prepend">
 												<span class="input-group-text">₱</span>
 											</div>
-											<input v-model="product.compare_price"  type="number" class="form-control" placeholder="0.00" name="compare_price">
+											<input v-model="product.compare_price"  type="number" class="form-control" placeholder="0.00" name="compare_price" :class="{ 'is-invalid' : product.errors.has('compare_price') }">
 											<has-error :form="product" field="compare_price"></has-error>
 										</div>
 									</div>
@@ -130,7 +134,7 @@
 											<div class="input-group-prepend">
 												<span class="input-group-text">₱</span>
 											</div>
-											<input v-model="product.cost"  type="number" class="form-control" placeholder="0.00" name="cost">
+											<input v-model="product.cost"  type="number" class="form-control" placeholder="0.00" name="cost" :class="{ 'is-invalid' : product.errors.has('cost') }">
 											<has-error :form="product" field="cost"></has-error>
 										</div>
 									</div>
@@ -146,7 +150,7 @@
 									<div class="form-group">
 										<label for="">SKU (Stock Keeping Unit)</label>
 										<div class="input-group">
-											<input v-model="product.sku" type="text" class="form-control" placeholder="SKU" name="sku" disabled>
+											<input v-model="product.sku" type="text" class="form-control" placeholder="SKU" name="sku" disabled :class="{ 'is-invalid' : product.errors.has('sku') }">
 											<div class="input-group-append">
 												<span class="input-group-text" id="basic-addon2">Generate</span>
 											</div>
@@ -158,7 +162,7 @@
 								<div class="col-sm-6">
 									<div class="form-group">
 										<label for="">Quantity</label>
-										<input v-model="product.qty" type="number" class="form-control" placeholder="0" name="quantity">
+										<input v-model="product.qty" type="number" class="form-control" placeholder="0" name="quantity" :class="{ 'is-invalid' : product.errors.has('quantity') }">
 										<has-error :form="product" field="quantity"></has-error>
 									</div>
 								</div>

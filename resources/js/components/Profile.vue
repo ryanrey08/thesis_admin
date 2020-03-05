@@ -6,8 +6,9 @@
 					<div class="col-md-12">
 						<div class="card card-primary card-outline">
 							<div class="card-body box-profile">
-								<div class="text-center image-container">
+								<div class="text-center image-container" @click="addPhoto" style="cursor: pointer;">
 									<img class="profile-user-img img-fluid img-circle" :src="staff.photo" alt="User profile picture">
+									 <input id="profilePic" name="profilePic" type="file" @change="uploadProfilePic" hidden/>
 								</div>
 
 								<h3 class="profile-username text-center">{{ staff.name }}</h3>
@@ -152,7 +153,7 @@
 															<span class="input-group-text"><i class="fa fa-user-lock fa-fw"></i></span>
 														</div>
 
-														<input v-model="newPassword" class="form-control" :class="{ 'is-invalid' : staff.errors.has('password') }" type="password" name="password" placeholder="New Password">
+														<input v-model="staff.password" class="form-control" :class="{ 'is-invalid' : staff.errors.has('password') }" type="password" name="password" placeholder="New Password">
 
 														<has-error :form="staff" field="password"></has-error>
 
@@ -217,6 +218,10 @@ export default {
 				type: null,
 				email: null,
 				photo: null,
+				password: null,
+				newPassword: null,
+				confirm: null,
+				role_id: null
 			}),
 			newPassword: null,
 			changePassword: false,
@@ -228,15 +233,34 @@ export default {
 			axios.get("/api/profile").then(({data}) => this.staff.fill(data));
 		},
 
+		addPhoto: function() {
+			document.getElementById('profilePic').click();
+
+		},
+
+		uploadProfilePic: function(e) {
+			  let image = e.target.files[0];
+
+            let reader = new FileReader();
+
+            reader.onloadend = files => {
+
+                this.staff.photo = reader.result;
+                console.log(reader.result.length);
+            };
+
+            reader.readAsDataURL(image);
+		},
+
 		saveChanges: function() {
 			this.$Progress.start();
-				this.staff.put('/api/staff/'+this.staff.id)
+				this.staff.post('/api/staff/updateProfile/'+this.staff.id)
 					.then(() => {
 						this.$Progress.finish();
 						$('#addStaff').modal('hide');
 						Toast.fire({
 							icon: 'success',
-							title: 'Staff Updated Successfully'
+							title: 'Account Updated Successfully'
 						});
 						Fire.$emit('AfterCreate');
 					})
@@ -255,5 +279,11 @@ export default {
 	created() {
 		this.getStaff();
 	}
-}
+};
 </script>
+
+<style scoped>
+	.timeline::before {
+    display: none;
+}
+</style>

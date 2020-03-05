@@ -77,9 +77,9 @@
 										<td class="text-center"><img :src="product.imgname" width="24"></td>
 										<td class="text-center" :class="product.name.length > 50 ? 'small' : ''">{{ product.name }}</td>
 										<td class="text-center">
-											{{ product.qty }} items with {{ product.combination.trim() == 'NONE' ? 0 : product.variantcount }} variants
+											{{ product.qty }} items with {{ product.items[0].combination.trim() == 'NONE' ? 0 : product.items.length }} variants
 										</td>
-										<td class="text-center" :class="product.categoryname.length > 20 ? 'small' : ''">{{ product.categoryname }}</td>
+										<td class="text-center" :class="product.category.description.length > 20 ? 'small' : ''">{{ product.categoryname }}</td>
 										<td>
 											<div class="btn-group">
 												<button class="btn btn-info btn-sm" trigger="hover" data-toggle="tooltip" title="Add Discount" @click="addDiscount(product)" v-if="product.discounttype == 0"><i class="fas fa-fw fa-percentage"></i></button>

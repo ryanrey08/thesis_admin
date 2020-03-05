@@ -395,7 +395,7 @@
 
 			viewProduct: function() {
 				axios.get('/api/product/view/' + this.prodid).then(( data ) => {
-					this.product = data.data[0];
+					this.product = data.data;
 					if(this.product.variantcount > 0 && this.product.combination != "NONE") {
 						this.getVariants();
 					} else if((this.product.variantcount - 1) == 0 && this.product.combination == "NONE") {

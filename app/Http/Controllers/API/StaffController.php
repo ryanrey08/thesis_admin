@@ -38,7 +38,8 @@ class StaffController extends Controller
             'name' => 'required|string|max:90',
             'role_id' => 'required',
             'email' => 'required|string|unique:users|max:25',
-            'password' => 'required'
+            'password' => 'min:8|required',
+            'confirm' => 'min:8|same:password',
         ]);
 
         DB::beginTransaction();
@@ -84,6 +85,7 @@ class StaffController extends Controller
             $oldStaff = $staff->update([
                 'name' => $request->name,
                 'role_id' => $request->role_id,
+                'photo' => $request->photo
             ]);
 
             if($oldStaff){
@@ -97,6 +99,35 @@ class StaffController extends Controller
             DB::rollback();
         }
 
+    }
+
+    public function updateProfile(Request $request, $id){
+        $staff = Staff::findOrFail($id);
+
+        $this->validate($request, [
+             'email' => 'required|string|unique:users|max:25',
+            'password' => 'required'
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+
+            $oldStaff = $staff->update([
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+
+            if($oldStaff){
+
+                DB::commit();
+
+            } else {
+                DB::rollback();
+            }
+        } catch(Exception $ex){
+            DB::rollback();
+        }
     }
 
     public function destroy($id) {

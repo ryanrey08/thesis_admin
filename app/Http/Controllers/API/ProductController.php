@@ -32,7 +32,13 @@ class ProductController extends Controller
 
     public function index() {
 
-        return $this->product->getAllProducts();
+        // return $this->product->getAllProducts();
+        return $this->product->with(
+            ['collections', 'category', 'tags', 'items', 'images' => function($query) {
+                 $query->where('iscover', '=', 1);
+                }
+            ])->orderBy('product.name', 'asc')->paginate(21);
+
     }
 
 
@@ -51,6 +57,21 @@ class ProductController extends Controller
     }
 
     public function store(Request $request) {
+
+         $this->validate($request, [
+            'name' => 'required',
+            'description' => 'required',
+            'category_id' =>'required',
+            'price' => 'required',
+            'treshold' => 'required',
+            'compare_price' =>'required',
+            'cost' => 'required',
+            'sku' =>'required',
+            'quantity' => 'required',
+            'category_id' =>'required',
+            'images' => 'required'
+        ]);
+
         DB::beginTransaction();
 
         try {
@@ -211,7 +232,12 @@ class ProductController extends Controller
 
     public function viewProduct($id) {
 
-        return $this->product->getProduct($id);
+        // return $this->product->getProduct($id);
+          return $this->product->with(
+            ['collections', 'category', 'tags', 'items', 'images' => function($query) {
+                 $query->where('iscover', '=', 1);
+                }
+            ])->where('id', '=', $id)->first();
     }
 
     public function getProductImages($id) {
@@ -323,23 +349,19 @@ class ProductController extends Controller
         
         $prod = Product::findOrFail($id);
 
-        $this->validate($request, [
+         $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
             'category_id' =>'required',
             'price' => 'required',
+            'treshold' => 'required',
             'compare_price' =>'required',
+            'cost' => 'required',
             'sku' =>'required',
-            // 'discount_type' =>'required',
-            // 'discount_value' =>'required',
-            // 'seo_id' =>'required',
-            'staff_id' =>'required',
+            'quantity' => 'required',
             'category_id' =>'required',
-            //'variants' => 'required',
-            //'productVariants' => 'required',
-            //'selectedItem' => 'required'
+            'images' => 'required'
         ]);
-
 
         
 

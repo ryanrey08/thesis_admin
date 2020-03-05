@@ -30,6 +30,13 @@ class CollectionController extends Controller
     }
 
     public function store(Request $request) {
+
+         $this->validate($request, [
+            'cover_image' => 'required',
+            'description' => 'required',
+            'display_image' =>'required'
+        ]);
+
     	DB::beginTransaction();
 
     	$newSEO = $this->seo->create([
