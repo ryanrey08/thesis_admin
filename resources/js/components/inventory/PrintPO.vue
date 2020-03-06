@@ -5,11 +5,10 @@
 				<div class="row px-5">
 					<div class="col-md-6 pt-5">
 						<div>
-							<h4>[Company Name]</h4>
-							<p>[Street Address]</p>
-							<p>[City. ST ZIP]</p>
-							<p>Phone: (000) 000-000</p>
-							<p>Fax: (000) 000-000</p>
+							<h4>{{ pageContent.title }}</h4>
+							<p>{{ pageContent.address }}</p>
+							<p>{{ pageContent.phone }}</p>
+							<p>{{ pageContent.email }}</p>
 							<p>Website</p>
 						</div>
 					</div>
@@ -132,11 +131,34 @@
 			return {
 				porderid: this.$route.params.porderid,
 				porders: [],
-				porder: {}
+				porder: {},
+				contents: [],
+				pageContent: new Form({
+					 id: "",
+                    title: "",
+                    email: "",
+                    address: "",
+                    phone: "",
+                    facebook_link: "",
+                    instagram_link: "",
+                    twitter_link: "",
+                    page_logo: "",
+                    title_color: "",
+                    page_color: "",
+                    menu_color: "",
+                    text_menu: "",
+                    header_color: "",
+                    footer_color: "",
+                    footer_content: "",
+                    footer_text: "",
+                    table_color: ""
+				})
 
 			}
 		},
 		mounted(){
+			this.contents = JSON.parse(window.localStorage.getItem('contents'));
+            this.pageContent.fill(this.contents);
 			this.loadPOItems();
 			 setTimeout(() => {
  				 // this.$htmlToPaper('printMe');

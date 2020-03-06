@@ -213,5 +213,37 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
 
 const app = new Vue({
     el: '#app',
-    router
+    router,
+     data(){
+        return{
+            contentPages: new Form({
+                    id: 1,
+                    title: "",
+                    email: "",
+                    address: "",
+                    phone: "",
+                    facebook_link: "",
+                    instagram_link: "",
+                    twitter_link: "",
+                    page_logo: "",
+                    title_color: "",
+                    page_color: "9",
+                    menu_color: "",
+                    text_menu: "",
+                    header_color: "",
+                    footer_color: "",
+                    footer_content: "",
+                    footer_text: "",
+                    table_color: ""
+                
+            })      
+        }
+    },
+
+    created() {
+         axios.get("/api/cms").then(({data}) => {
+                this.contentPages = data;
+                 window.localStorage.setItem('contents', JSON.stringify(this.contentPages[0]));
+            });
+    }
 });

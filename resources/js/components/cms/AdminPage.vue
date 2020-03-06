@@ -87,20 +87,24 @@
             return{
 
             	pageContent: new Form({
-                    id: null,
-                    theme_name: "",
-            		page_logo: "",
+                    id: "",
                     title: "",
+                    email: "",
+                    address: "",
+                    phone: "",
+                    facebook_link: "",
+                    instagram_link: "",
+                    twitter_link: "",
+                    page_logo: "",
                     title_color: "",
-	               page_color: "",
-	               menu_color: "",
-                   text_menu: "",
-	               header_color: "",
-	               footer_color: "",
-                   footer_content: "",
-                   footer_text: "",
-	               table_color: "",
-                   is_active: null
+                    page_color: "",
+                    menu_color: "",
+                    text_menu: "",
+                    header_color: "",
+                    footer_color: "",
+                    footer_content: "",
+                    footer_text: "",
+                    table_color: ""
             	}),
 
                 contents: []

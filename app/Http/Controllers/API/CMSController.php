@@ -30,7 +30,7 @@ class CMSController extends Controller
      */
     public function index() {
 
-        return DB::table('cms_admin')->get();
+        return DB::table('cms')->get();
         
     }
 

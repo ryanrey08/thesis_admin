@@ -9,6 +9,6 @@ use DB;
 class ProductTransactions extends Model
 {
     protected $guarded = [];
-    protected $table = 'products_transaction';
+    protected $table = 'transaction_has_item';
     public $timestamps = false;
 }

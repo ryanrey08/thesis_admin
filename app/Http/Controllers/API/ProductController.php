@@ -61,14 +61,13 @@ class ProductController extends Controller
          $this->validate($request, [
             'name' => 'required',
             'description' => 'required',
-            'category_id' =>'required',
+            'categoryID' =>'required',
             'price' => 'required',
-            'treshold' => 'required',
+            'threshold' => 'required',
             'compare_price' =>'required',
             'cost' => 'required',
             'sku' =>'required',
             'quantity' => 'required',
-            'category_id' =>'required',
             'images' => 'required'
         ]);
 
@@ -232,12 +231,12 @@ class ProductController extends Controller
 
     public function viewProduct($id) {
 
-        // return $this->product->getProduct($id);
-          return $this->product->with(
-            ['collections', 'category', 'tags', 'items', 'images' => function($query) {
-                 $query->where('iscover', '=', 1);
-                }
-            ])->where('id', '=', $id)->first();
+        return $this->product->getProduct($id);
+          // return $this->product->with(
+          //   ['collections', 'category', 'tags', 'items', 'images' => function($query) {
+          //        $query->where('iscover', '=', 1);
+          //       }
+          //   ])->where('id', '=', $id)->first();
     }
 
     public function getProductImages($id) {

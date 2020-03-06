@@ -47,29 +47,29 @@ class POSController extends Controller
         DB::beginTransaction();
 
         try {
-            $transactionID = $this->generateID(Transactions::class, 10);
+            $transactionID = $this->generateID(Transactions::class, 8);
 
             $newPayments = $this->payments->create([
-                'transactionid' => $transactionID,
+                'payment_method_id' => 3,
                 'amount' => $request->payment,
                 'ispaid' => 1,
             ]);
 
             $newTransactions = $this->transactions->create([
                 'id' => $transactionID,
-                'type' => 1,
-                'paymentid' => $newPayments->id,
-                'paymenttype' => 3,
+                // 'type' => 1,
+                'payment_id' => $newPayments->id,
+                'transaction_type_id' => 1,
             ]);
 
             foreach($request->selectedItems as $selectedItem) {
 
                 $newSelectedItem = $this->proTrans->create([
-                    'productid' => $selectedItem['product']['product_id'],
-                    'itemid' => $selectedItem['product']['id'],
+                    'item_product_id' => $selectedItem['product']['product_id'],
+                    'item_id' => $selectedItem['product']['id'],
                     'price' => $selectedItem['product']['price'],
                     'quantity' => $selectedItem['quantity'],
-                    'transactionid' => $transactionID
+                    'transaction_id' => $transactionID
                 ]);
 
                 DB::update('UPDATE item SET quantity = ? where id = ?', [($selectedItem['product']['quantity'] - $selectedItem['quantity']), $selectedItem['product']['id']]);

@@ -273,17 +273,16 @@
 				</div>
 
 			</div>
-		<div id="printMe" class="container-sm my-5">
+		<div id="printMe" class="container-sm my-5" hidden="true">
 		<div class="row">
 			<div class="col-md-8 offset-md-2" style="border: 1px solid black">
 				<div class="row px-5">
 					<div class="col-md-6 pt-5">
 						<div>
-							<h4>[Company Name]</h4>
-							<p>[Street Address]</p>
-							<p>[City. ST ZIP]</p>
-							<p>Phone: (000) 000-000</p>
-							<p>Fax: (000) 000-000</p>
+							<h4>{{ pageContent.title }}</h4>
+							<p>{{ pageContent.address }}</p>
+							<p>{{ pageContent.phone }}</p>
+							<p>{{ pageContent.email }}</p>
 							<p>Website</p>
 						</div>
 					</div>
@@ -400,7 +399,28 @@ export default {
 					activeProduct: [],
 					variantOptions: [],
 					selectedProduct: {},
-					isFinish: false
+					isFinish: false,
+					contents: [],
+					pageContent: new Form({
+						 id: "",
+	                    title: "",
+	                    email: "",
+	                    address: "",
+	                    phone: "",
+	                    facebook_link: "",
+	                    instagram_link: "",
+	                    twitter_link: "",
+	                    page_logo: "",
+	                    title_color: "",
+	                    page_color: "",
+	                    menu_color: "",
+	                    text_menu: "",
+	                    header_color: "",
+	                    footer_color: "",
+	                    footer_content: "",
+	                    footer_text: "",
+	                    table_color: ""
+					})
 				}
 			},
 
@@ -731,6 +751,8 @@ export default {
 			},
 
 			created() {
+				this.contents = JSON.parse(window.localStorage.getItem('contents'));
+            	this.pageContent.fill(this.contents);
 				// setTimeout(this.getDate(), 1000);
 				this.loadProducts();
 				Fire.$on('AfterTransaction', () => {

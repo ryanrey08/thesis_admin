@@ -10,7 +10,7 @@ class Transactions extends Model
 {
     
     protected $guarded = [];
-    protected $table = 'transactions';
+    protected $table = 'transaction';
 
 
     public function getItemsInTransaction($transactionid) {
